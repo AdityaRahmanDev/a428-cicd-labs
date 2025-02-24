@@ -34,7 +34,7 @@
 
                     sh 'find / -name ssh 2>/dev/null || echo "SSH not found in any location"'
 
-                    sh 'apt-get install -y sshpass openssh-client' 
+                    sh 'apt-get update && apt-get install -y sshpass openssh-client' 
                 }
                 stage('Deploy') { 
                     // Menjalankan script deliver.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
