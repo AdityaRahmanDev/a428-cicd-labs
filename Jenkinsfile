@@ -36,7 +36,7 @@
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
 
                     sh '''
-                        ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
+                        ssh -o StrictHostKeyChecking=no -i  \$SSH_KEY \$EC2_USER@\$EC2_HOST '
                         sudo systemctl start nginx
                         '
                     '''
