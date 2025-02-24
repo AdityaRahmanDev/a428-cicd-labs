@@ -28,9 +28,9 @@
                 stage('Deploy') { 
                     // Menjalankan script deliver.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
                     // sh './jenkins/scripts/deliver.sh' 
-                    sh 'sudo rm -rf /var/lib/dpkg/lock-frontend'
-                    sh 'sudo rm -rf /var/lib/dpkg/frontend'
-                    sh 'apt-get update && apt-get install -y sshpass openssh-client' 
+                    sh 'rm -rf /var/lib/dpkg/lock-frontend'
+                    sh 'rm -rf /var/lib/dpkg/frontend'
+                    sh 'apt-get install -y sshpass openssh-client' 
 
                     // Deploy dan jalankan temporary di EC2
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
