@@ -25,6 +25,12 @@
                     // Menlankan perintah input message untuk lanjut ke tahap deploy atau menghentikan eksekusi
                     input message: 'Lanjutkan ke tahap Deploy?' 
                 }
+                stage('Check SSH') {
+                // Memeriksa apakah ssh ada di PATH
+                sh 'echo $PATH'
+                sh 'which ssh'
+                }
+                
                 stage('Deploy') { 
                     // Menjalankan script deliver.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
                     // sh './jenkins/scripts/deliver.sh' 
