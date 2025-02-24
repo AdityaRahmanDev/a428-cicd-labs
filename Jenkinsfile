@@ -30,7 +30,7 @@
                     // sh './jenkins/scripts/deliver.sh' 
                     // sh 'rm -rf /var/lib/dpkg/lock-frontend'
                     // sh 'rm -rf /var/lib/dpkg/frontend'
-                    sh 'apt-get install -y sshpass openssh-client' 
+                     sh 'apt-get update && apt-get install -y sshpass openssh-client' 
 
                     // Deploy dan jalankan temporary di EC2
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
