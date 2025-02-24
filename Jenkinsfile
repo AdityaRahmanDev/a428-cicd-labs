@@ -33,6 +33,8 @@
                     sh 'which ssh || echo "SSH not found"'
 
                     sh 'find / -name ssh 2>/dev/null || echo "SSH not found in any location"'
+
+                    sh 'apt-get install -y sshpass openssh-client' 
                 }
                 stage('Deploy') { 
                     // Menjalankan script deliver.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
@@ -40,13 +42,12 @@
 
                     // Deploy dan jalankan temporary di EC2
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-                sh 'apt-get install -y sshpass openssh-client' 
 
-                sh '''
-                    ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
+                    sh '''
+                        ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
                         sudo systemctl start nginx
-                    '
-                '''
+                        '
+                    '''
                     // Menjalankan perintah sleep untuk menjeda eskekusi pipeline agar aplikasi bisa tetap berjalan selama 1 menit.
                     sleep time: 1, unit: 'MINUTES'
 
