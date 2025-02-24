@@ -26,11 +26,12 @@
                     input message: 'Lanjutkan ke tahap Deploy?' 
                 }
                 stage('Check SSH') {
-                // Memeriksa apakah ssh ada di PATH
-                sh 'echo $PATH'
-                sh 'which ssh'
+                    // Memeriksa apakah ssh ada di PATH
+                    sh 'echo $PATH'
+                    sh 'ls -l /usr/bin/ssh'  // Memeriksa izin
+                    sh 'cat /usr/bin/ssh'    // Memeriksa apakah file ssh ada
+                    sh 'which ssh || echo "SSH not found"'
                 }
-                
                 stage('Deploy') { 
                     // Menjalankan script deliver.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
                     // sh './jenkins/scripts/deliver.sh' 
