@@ -32,8 +32,6 @@
                     // Deploy dan jalankan temporary di EC2
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                 sh '''
-                    eval $(ssh-agent -s)
-                    ssh-add \$SSH_KEY
                     ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
                         sudo systemctl start nginx
                     '
