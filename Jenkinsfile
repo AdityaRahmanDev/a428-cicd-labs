@@ -33,7 +33,8 @@
                     sh 'which ssh || echo "SSH not found"'
 
                     sh 'find / -name ssh 2>/dev/null || echo "SSH not found in any location"'
-
+                    sh 'rm -rf /var/lib/dpkg/lock-frontend'
+                    sh 'rm -rf /var/lib/dpkg/frontend'
                     sh 'apt-get update && apt-get install -y sshpass openssh-client' 
                 }
                 stage('Deploy') { 
