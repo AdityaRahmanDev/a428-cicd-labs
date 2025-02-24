@@ -40,10 +40,12 @@
 
                     // Deploy dan jalankan temporary di EC2
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                sh 'apt-get install -y sshpass openssh-client' 
+
                 sh '''
-                    bash -c "ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
+                    ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
                         sudo systemctl start nginx
-                    '"
+                    '
                 '''
                     // Menjalankan perintah sleep untuk menjeda eskekusi pipeline agar aplikasi bisa tetap berjalan selama 1 menit.
                     sleep time: 1, unit: 'MINUTES'
