@@ -7,7 +7,7 @@
             SSH_KEY_ID = 'ec2-ssh-key'
             }
             // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan mengunduh Docker image bernama node:16-buster-slim dan juga menjalankan container dengan port mapping 3000:3000
-            docker.image('node:16-buster-slim').inside('-p 3000:3000') {
+            docker.image('node:16-buster-slim').inside('-p 3000:3000 --user root') {
                 // Untuk mendefinisikan sebuah stage (tahapan) 'Build' untuk melakukan proses build
                 stage('Build') {
                     // Menjalankan perintah npm untuk menginstall dependencies yang diperlukan untuk menjalankan aplikasi React App 
