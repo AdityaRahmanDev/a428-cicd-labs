@@ -34,24 +34,32 @@ node {
                 // sh 'rm -rf /var/lib/dpkg/frontend'
                 // sh 'ls -la dist'
                 sh 'ls -la build'
-                sh 'apt-get update && apt-get install -y sshpass openssh-client' 
+                // Pastikan menginstall sshpass dengan benar
+                sh '''
+                    apt-get update
+                    apt-get install -y sshpass openssh-client
+                    which sshpass
+                '''
 
                 sh "tar -czf deploy.tar.gz -C build ."
 
-                sh "sshpass -p '${EC2_PASSWORD}' scp -o StrictHostKeyChecking=no deploy.tar.gz ${EC2_USER}@${EC2_HOST}:~/"
+                // Gunakan single quotes untuk mencegah Groovy interpolation warning
+                sh '''
+                    sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no deploy.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
+                '''
 
-                            // Deploy ke Nginx
-                sh """
-                    sshpass -p '${EC2_PASSWORD}' ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '
+                // Deploy ke Nginx dengan sshpass
+                sh '''
+                    sshpass -p "''' + EC2_PASSWORD + '''" ssh -o StrictHostKeyChecking=no ''' + EC2_USER + '''@''' + EC2_HOST + ''' '
                         sudo systemctl stop nginx &&
-                        sudo rm -rf ${NGINX_PATH}/* &&
-                        sudo mkdir -p ${NGINX_PATH} &&
-                        sudo tar -xzf ~/deploy.tar.gz -C ${NGINX_PATH} &&
-                        sudo chown -R nginx:nginx ${NGINX_PATH} &&
+                        sudo rm -rf ''' + NGINX_PATH + '''/* &&
+                        sudo mkdir -p ''' + NGINX_PATH + ''' &&
+                        sudo tar -xzf ~/deploy.tar.gz -C ''' + NGINX_PATH + ''' &&
+                        sudo chown -R nginx:nginx ''' + NGINX_PATH + ''' &&
                         sudo systemctl start nginx &&
                         rm ~/deploy.tar.gz
                     '
-                """
+                '''
                 // Menjalankan perintah sleep untuk menjeda eskekusi pipeline agar aplikasi bisa tetap berjalan selama 1 menit.
                 sleep time: 1, unit: 'MINUTES'
 
