@@ -1,14 +1,13 @@
 // Membuat Jenkins Pipeline dengan Scripted Pipeline
 // Mulai dengan mendefinisikan pipeline
 node {
-    // Definisi credentials harus menggunakan withCredentials
+    // Definisi environment variables di level yang tepat
+    def EC2_HOST = '54.151.249.134'
+    def EC2_USER = 'ec2-user'  
+    def NGINX_PATH = '/usr/share/nginx/html'
+    
+    // Membungkus dengan withCredentials
     withCredentials([string(credentialsId: 'ec2-password', variable: 'EC2_PASSWORD')]) {
-        environment {
-            EC2_HOST = '54.151.249.134'
-            EC2_USER = 'ec2-user'  
-            NGINX_PATH = '/usr/share/nginx/html'
-        }
-
         // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan mengunduh Docker image bernama node:16-buster-slim dan juga menjalankan container dengan port mapping 3000:3000
         docker.image('node:16-buster-slim').inside('-p 3000:3000 --user root') {
             // Untuk mendefinisikan sebuah stage (tahapan) 'Build' untuk melakukan proses build
