@@ -31,6 +31,7 @@
                     // sh 'rm -rf /var/lib/dpkg/lock-frontend'
                     // sh 'rm -rf /var/lib/dpkg/frontend'
                     sh 'ls -la dist'
+                    sh 'ls -la build'
                     sh 'apt-get update && apt-get install -y sshpass openssh-client' 
 
                     // Deploy dan jalankan temporary di EC2
