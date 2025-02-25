@@ -27,10 +27,11 @@
 
                 stage('Deploy') { 
                     // Menjalankan script deliver.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
-                    // sh './jenkins/scripts/deliver.sh' 
+                    sh './jenkins/scripts/deliver.sh' 
                     // sh 'rm -rf /var/lib/dpkg/lock-frontend'
                     // sh 'rm -rf /var/lib/dpkg/frontend'
-                     sh 'apt-get update && apt-get install -y sshpass openssh-client' 
+                    sh 'ls -la dist'
+                    sh 'apt-get update && apt-get install -y sshpass openssh-client' 
 
                     // Deploy dan jalankan temporary di EC2
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
@@ -45,7 +46,7 @@
 
 
                     // Menjalankan script kill.sh yang berada di direktori jenkins/scripts dari root pada react-app repository
-                    // sh './jenkins/scripts/kill.sh' 
+                    sh './jenkins/scripts/kill.sh' 
 
                     sh """
                         ssh -i \$SSH_KEY \$EC2_USER@\$EC2_HOST '
